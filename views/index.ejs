@@ -1,3 +1,4 @@
+<% var editable = false %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -58,18 +59,26 @@
                             <div class="row my-5 align-items-md-stretch">
                                 <div class="">
                                   <div class="h-100 p-5 bg-body-tertiary border rounded-3">
-                                    <h2><%= posts[i].by %></h2>
-                                    <p><%= posts[i].desc %></p>
-                                    <% if (posts[i].by === username) { 
-                                      %>
-                                        <form action="/delete" method="post">
-                                            <input type="hidden" name="posted_By" value="<%= posts[i].by%>">
-                                            <input type="hidden" name="description" value="<%= posts[i].desc %>">
-                                            <input type="hidden" name="index" value="<%= i %>">
-                                            <button type="submit" class="btn btn-outline-secondary">Delete</button>
+                                    <% if(editable){ %>
+                                    <% if (posts[i].by === username) { %>
+                                      <form method="PUT" id='form-user'>
+                                            <input type="hidden" id="posted_By" name="posted_By" value="<%= posts[i].by%>">
+                                            <input type="text" class="form-control my-5" id="description" name="description" value="<%= posts[i].desc%>">
+                                            <input type="hidden" id="index" name="index" value="<%= i %>">
+                                            <button type="submit" id="edit-button" class="btn btn-outline-secondary">Submit</button>
                                             
-                                        </form>
+                                        
                                        <% }%>
+                                        <% }else {%>
+                                        <h2><%= posts[i].by %></h2>
+                                        <p><%= posts[i].desc %></p>
+                                        <input type="hidden" id="posted_By" name="posted_By" value="<%= posts[i].by%>">
+                                        <input type="hidden" class="form-control my-5" id="description" name="description" value="<%= posts[i].desc%>">
+                                        <input type="hidden" id="index" name="index" value="<%= i %>">
+                                        <button type="submit" id="edit-button" class="btn btn-outline-secondary">Submit</button>
+                                        
+                                       <%}%>
+                                      </form> 
                                   </div>
                                 </div>
                               </div>      

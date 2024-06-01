@@ -14,6 +14,7 @@ var users = [];
 
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(express.static('public'))
+app.use(express.json());
 
 /*---------------------------------------------------*/
 /*----------------------- GET -----------------------*/
@@ -50,6 +51,7 @@ app.get("/logOut", (req, res, next) => {
 /*---------------------------------------------------*/
 /*---------------------- POST -----------------------*/
 /*---------------------------------------------------*/
+
 app.post("/submit_post", (req, res, next) => {
   
   if(loggedIn && req.body.this_post){
@@ -109,11 +111,19 @@ app.post("/Sing_up",(req, res, next) => {
   }
 })
 
-app.post("/delete", (req,res,next) => {
-  posts.splice(req.body.index , 1); 
-  console.log("Successfully deleted")
-  res.redirect('/')
-})
+/*---------------------------------------------------*/
+/*---------------------- POST -----------------------*/
+/*---------------------------------------------------*/
+
+app.put('/usuario/:id', (req, res) => {
+  
+  console.log(req.body);
+  delete posts[req.body.id].desc; 
+  posts[req.body.id].desc = req.body.desc;
+  console.log(posts);
+  res.redirect('/');
+
+});
 
 app.listen(port,() => {
     console.log(`server running at ${port}`)
