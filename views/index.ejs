@@ -1,4 +1,3 @@
-<% var editable = false %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -59,24 +58,24 @@
                             <div class="row my-5 align-items-md-stretch">
                                 <div class="">
                                   <div class="h-100 p-5 bg-body-tertiary border rounded-3">
-                                    <% if(editable){ %>
+                                    
                                     <% if (posts[i].by === username) { %>
+                                    <% if(editable){ %>
                                       <form method="PUT" id='form-user'>
                                             <input type="hidden" id="posted_By" name="posted_By" value="<%= posts[i].by%>">
                                             <input type="text" class="form-control my-5" id="description" name="description" value="<%= posts[i].desc%>">
                                             <input type="hidden" id="index" name="index" value="<%= i %>">
-                                            <button type="submit" id="edit-button" class="btn btn-outline-secondary">Submit</button>
+                                            <button type="submit" id="edit-button" onClick="refresh" class="btn btn-outline-secondary">Submit</button>
                                             
                                         
-                                       <% }%>
-                                        <% }else {%>
-                                        <h2><%= posts[i].by %></h2>
-                                        <p><%= posts[i].desc %></p>
-                                        <input type="hidden" id="posted_By" name="posted_By" value="<%= posts[i].by%>">
-                                        <input type="hidden" class="form-control my-5" id="description" name="description" value="<%= posts[i].desc%>">
-                                        <input type="hidden" id="index" name="index" value="<%= i %>">
-                                        <button type="submit" id="edit-button" class="btn btn-outline-secondary">Submit</button>
-                                        
+                                       <% }else {%>
+                                        <h2><%= posts[i].by%></h2>
+                                        <p><%= posts[i].desc%></p>
+                                        <form action="/setEditable" method="POST">
+                                          <input type="hidden" id="index" name="index" value="<%= i %>">
+                                          <button type="submit" class="btn btn-outline-secondary">edit</button>   
+                                       
+                                        <% }%>
                                        <%}%>
                                       </form> 
                                   </div>
@@ -87,7 +86,7 @@
                 <% } %>
                 
             </div>
-
+            
            
             <div class="col"></div></div>
         </div>

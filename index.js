@@ -9,8 +9,8 @@ var post ={};
 var posts = [];
 var user = {};
 var users = [];
-
-
+var postStatus = false;
+var indexPost = 0;
 
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(express.static('public'))
@@ -26,6 +26,8 @@ app.get("/", (req,res,next) => {
       isLogged: loggedIn,
       posts: posts,
       username: user.name,
+      editable: postStatus,
+      index: indexPost,
   })
   }else res.render("index.ejs",{
       isLogged: loggedIn,
@@ -80,11 +82,7 @@ app.post("/submit", (req, res ,next) => {
   }else {
     loggedIn = true;
     user = log_user;
-    res.render("index.ejs",{
-      isLogged: loggedIn,
-      posts: posts,
-      username: user.name,
-  })
+    res.redirect('/');
   }
   
  
@@ -110,19 +108,23 @@ app.post("/Sing_up",(req, res, next) => {
     res.redirect("/");
   }
 })
-
+app.post('/setEditable', (req,res,next) => {
+  postStatus = true;
+  indexPost = req.body.index;
+  console.log(req.body);
+  res.redirect('/');
+})
 /*---------------------------------------------------*/
 /*---------------------- PUT  -----------------------*/
 /*---------------------------------------------------*/
 
-app.put('/usuario/:id', (req, res) => {
+app.put('/usuario/:id', (req, res, next) => {
   
   console.log(req.body);
   delete posts[req.body.id].desc; 
   posts[req.body.id].desc = req.body.desc;
   console.log(posts);
-  res.redirect('/');
-
+  postStatus = false;
 });
 
 app.listen(port,() => {
