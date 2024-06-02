@@ -5,7 +5,12 @@ const app = express();
 const port = 3000;
 
 var loggedIn = false;
-var post ={};
+var post ={
+  /*
+    by:
+    desc:
+    */
+};
 var posts = [];
 var user = {};
 var users = [];
@@ -20,6 +25,9 @@ app.use(express.json());
 /*----------------------- GET -----------------------*/
 /*---------------------------------------------------*/
 
+app.get("/index.js", (req,res)=> {
+  res.sendStatus(200);
+})
 app.get("/", (req,res,next) => {
   if(loggedIn){
     res.render("index.ejs",{
@@ -110,21 +118,20 @@ app.post("/Sing_up",(req, res, next) => {
 })
 app.post('/setEditable', (req,res,next) => {
   postStatus = true;
-  indexPost = req.body.index;
-  console.log(req.body);
+  indexPost = parseInt(req.body.index, 10);
+  console.log(indexPost);
   res.redirect('/');
 })
 /*---------------------------------------------------*/
 /*---------------------- PUT  -----------------------*/
 /*---------------------------------------------------*/
 
-app.put('/usuario/:id', (req, res, next) => {
-  
-  console.log(req.body);
-  delete posts[req.body.id].desc; 
-  posts[req.body.id].desc = req.body.desc;
-  console.log(posts);
+app.patch('/usuario/:id', (req, res, next) => {
+
+  posts.splice(indexPost , 1 , {by: req.body.name, desc: req.body.desc})
+  console.log("Element: " + indexPost + " edited.");
   postStatus = false;
+  res.redirect('/');
 });
 
 app.listen(port,() => {
