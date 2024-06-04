@@ -39,35 +39,53 @@
             <div class="col"></div>
 
             <div class="col-7">
-                <% if (isLogged && locals.username) { %>
-                        <h1>Welcome <%= username %></h1>
-                <% } else {%>
-                        <h1>Welcome to Blog page</h1>
-                <% } %>
-                <div class="row align-items-md-stretch">        
-                    <form action="/submit_post" method="POST">
-                            <input autocomplete="off" type="text"  class="form-control my-5" id="" name="this_post" placeholder="What are you thinking?">
-                            <button type="submit" class="btn btn-info float-end">post</button>   
-                    </form>
-                </div>
-                
+
+            <% if (editable === false) { %>
+                  <% if (isLogged && locals.username) { %>
+                    <h1>Welcome <%= username %></h1>
+            <% } else {%>
+                    <h1>Welcome to Blog page</h1>
+            <% } %>
+            <div class="row align-items-md-stretch">        
+                <form action="/submit_post" method="POST">
+                        <input autocomplete="off" type="text"  class="form-control my-5" id="" name="this_post" placeholder="What are you thinking?">
+                        <button type="submit" class="btn btn-info float-end">post</button>   
+                </form>
+            </div>
+              <% } %>
+
+              
                 <% if (locals.posts.length >= 1 && isLogged) { %>
                     
                         <% for(i = posts.length-1; i >= 0; i--){ %>
                             <div class="row my-5 align-items-md-stretch">
                                   <div class="h-100 p-5 bg-body-tertiary border rounded-3">
-                                    
-                                    <% if (posts[i].by === username) { %>
-                                    <% if(editable){ %>
-                                      <form action="/setEditable" method="PUT" id='form-user'>
-                                            <input type="hidden" id="posted_By" name="posted_By" value="<%= posts[index].by%>">
-                                            <input type="text" class="form-control my-5" id="description" name="description" value="<%= posts[index].desc%>">
-                                            <input type="hidden" id="index" name="index" value="<%= i %>">
-                                            <button type="submit" id="edit-button" class="btn btn-outline-secondary">Submit</button>
+
+                                    <% if (editable) { %>
+                                        <form action="/setEditable" method="PUT" id='form-user'>
+                                          <input type="hidden" id="posted_By" name="posted_By" value="<%= posts[index].by%>">
+                                          <input type="text" class="form-control my-5" id="description" name="description" value="<%= posts[index].desc%>">
+                                          <input type="hidden" id="index" name="index" value="<%= i %>">
+                                          <button type="submit" id="edit-button" class="btn btn-outline-secondary">Submit</button>
+                                        </form> 
+                                    </div>
+                              </div> 
+                                  <% break; %>
+                                    <% } else {%>
+                                      <h2><%= posts[i].by%></h2>
+                                      <p><%= posts[i].desc%></p>
+                                      <form action="/setEditable" method="POST">
+                                        <input type="hidden" id="index" name="index" value="<%= i %>">
+                                        <% if (posts[i].by === username) { %>
+                                        <button type="submit" class="btn btn-outline-secondary">edit</button>
+                                        <% } %>
                                       </form> 
-                                  </div>
-                            </div>
-                                            <% break; %>
+                                      
+                                  <% } %>
+                                    <!-- <% if (posts[i].by === username) { %>
+                                    <% if(editable){ %>
+                                      
+                                            
                                        <% } else { %>
                                         <h2><%= posts[i].by%></h2>
                                         <p><%= posts[i].desc%></p>
@@ -76,7 +94,7 @@
                                           <button type="submit" class="btn btn-outline-secondary">edit</button>   
                                       </form> 
                                         <% }%>
-                                       <%}%>
+                                       <%}%> -->
                                   </div>
                             </div>       
                                      
